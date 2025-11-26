@@ -2,7 +2,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const changelogPath = path.join(__dirname, "CHANGELOG.json");
+const changelogPath = path.join(__dirname, "changelog.json");
 const type = process.argv[2];  // added / fixed / improved
 const message = process.argv[3]; // message string
 
