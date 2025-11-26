@@ -1,0 +1,46 @@
+name: Auto Release
+
+on:
+  push:
+    branches:
+      - main   # only when code reaches main
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Release Script
+        run: npm run release added "CI: Auto Release by GitHub Actions"
+
+      - name: Push latest changelog
+        run: |
+          git config user.name "GitHub Action"
+          git config user.email "actions@github.com"
+          git add CHANGELOG.json
+          git commit -m "Updated changelog via CI"
+          git push
+
+      - name: Create Git Tag
+        run: |
+          NEW_TAG=$(node -p "require('./CHANGELOG.json'); Object.keys(require('./CHANGELOG.json')).sort((a,b)=>a.localeCompare(b, undefined, { numeric: true })).pop()")
+          git tag $NEW_TAG
+          git push origin $NEW_TAG
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
