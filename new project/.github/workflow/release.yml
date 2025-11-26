@@ -23,7 +23,7 @@ jobs:
         run: npm install
 
       - name: Run Release Script
-        run: npm run release -- added "CI: Auto Release by GitHub Actions"
+        run: npm run release added "CI: Auto Release by GitHub Actions"
 
       - name: Push latest changelog
         run: |
