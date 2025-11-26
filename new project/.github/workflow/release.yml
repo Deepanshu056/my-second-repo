@@ -3,7 +3,8 @@ name: Auto Release
 on:
   push:
     branches:
-      - main2   # only when code reaches main
+      - main  # only when code reaches main 
+      - main2  # only when code reaches main
 
 jobs:
   release:
